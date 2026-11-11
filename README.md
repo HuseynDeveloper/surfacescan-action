@@ -6,6 +6,8 @@ Run passive external domain security posture checks in your CI/CD pipeline using
 
 No agents, no invasive port scans, and no DNS changes required — verifies TLS certificates, HTTPS redirects, HTTP security headers (`HSTS`, `CSP`, `X-Frame-Options`, `COOP`, `Permissions-Policy`), cookie flags, CORS wildcards, third-party SRI hashes, `SPF`/`DKIM`/`DMARC`, `DNSSEC`, `CAA`, and dangling subdomain takeover risks.
 
+[![SurfaceScan — Passive Domain Security Audit](https://github.com/user-attachments/assets/e2eb651f-8a50-4f9d-818a-4dab05621c93)](https://surfacescan.uk)
+
 ---
 
 ## Quick Start
