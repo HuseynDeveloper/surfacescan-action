@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Run SurfaceScan Audit
-        uses: YOUR_USERNAME/surfacescan-action@v1
+        uses: HuseynDeveloper/surfacescan-action@v1
         with:
           domain: 'example.com'
           fail-under: 'B'
@@ -57,7 +57,7 @@ jobs:
     steps:
       - name: Audit Production Domain
         id: scan
-        uses: YOUR_USERNAME/surfacescan-action@v1
+        uses: HuseynDeveloper/surfacescan-action@v1
         with:
           domain: 'yourdomain.com'
           api-key: ${{ secrets.SURFACESCAN_API_KEY }}
