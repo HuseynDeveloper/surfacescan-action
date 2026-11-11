@@ -1,5 +1,5 @@
 name: 'SurfaceScan Domain Audit'
-description: 'Passively audit any domain via the SurfaceScan REST API (TLS, headers, SPF/DMARC, subdomains) and enforce a minimum security grade in CI.'
+description: 'Passively audit domain TLS, headers, SPF/DMARC, and subdomains via SurfaceScan API and gate CI builds.'
 author: 'SurfaceScan'
 branding:
   icon: 'shield'
