@@ -1,0 +1,67 @@
+name: 'SurfaceScan Domain Audit'
+description: 'Passively audit any domain via the SurfaceScan REST API (TLS, headers, SPF/DMARC, subdomains) and enforce a minimum security grade in CI.'
+author: 'SurfaceScan'
+branding:
+  icon: 'shield'
+  color: 'green'
+
+inputs:
+  domain:
+    description: 'Domain name to audit passively (e.g. example.com). Use only on domains you own or are authorized to check.'
+    required: true
+  api-key:
+    description: 'Optional SurfaceScan Personal API key from https://surfacescan.uk/profile (increases rate limits from 8/min to 30/min Free or 120/min Pro).'
+    required: false
+    default: ''
+  fail-under:
+    description: 'Minimum acceptable letter grade (A+, A, B+, B, C, D, F). Set to "none" to report without failing the workflow.'
+    required: false
+    default: 'B'
+  sarif-file:
+    description: 'Optional output file path for SARIF v2.1.0 report (e.g. surfacescan.sarif) to upload to GitHub Code Scanning.'
+    required: false
+    default: ''
+  write-summary:
+    description: 'Write Markdown audit report to GitHub Job Summary (true/false).'
+    required: false
+    default: 'true'
+  lang:
+    description: 'Report language returned by the API (en or az).'
+    required: false
+    default: 'en'
+  api-url:
+    description: 'SurfaceScan API base URL.'
+    required: false
+    default: 'https://surfacescan.uk'
+
+outputs:
+  grade:
+    description: 'Computed SurfaceScan letter grade (A+ to F)'
+    value: ${{ steps.audit.outputs.grade }}
+  score:
+    description: 'Numeric SurfaceScan score (0-100)'
+    value: ${{ steps.audit.outputs.score }}
+  sarif-file:
+    description: 'Path to generated SARIF v2.1.0 report (if enabled)'
+    value: ${{ steps.audit.outputs.sarif-file }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Setup Node.js 20
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Run SurfaceScan API Audit
+      id: audit
+      shell: bash
+      env:
+        INPUT_DOMAIN: ${{ inputs.domain }}
+        INPUT_API_KEY: ${{ inputs.api-key }}
+        INPUT_FAIL_UNDER: ${{ inputs.fail-under }}
+        INPUT_SARIF_FILE: ${{ inputs.sarif-file }}
+        INPUT_WRITE_SUMMARY: ${{ inputs.write-summary }}
+        INPUT_LANG: ${{ inputs.lang }}
+        INPUT_API_URL: ${{ inputs.api-url }}
+      run: node "${{ github.action_path }}/src/scan.js"

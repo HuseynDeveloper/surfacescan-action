@@ -1,0 +1,27 @@
+name: Self-Test SurfaceScan Action
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test-action:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Action against surfacescan.uk
+        id: scan
+        uses: ./
+        with:
+          domain: 'surfacescan.uk'
+          fail-under: 'B'
+          sarif-file: 'test.sarif'
+
+      - name: Verify Outputs
+        run: |
+          echo "Grade: ${{ steps.scan.outputs.grade }}"
+          echo "Score: ${{ steps.scan.outputs.score }}"
+          test -s "${{ steps.scan.outputs.sarif-file }}"
